@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:HW1.Converters"
+             xmlns:vm="clr-namespace:HW1.ViewModels"
+             x:Class="HW1.Views.Pages.Form"
+             x:DataType="vm:FormViewModel">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ScrollView>
+        <VerticalStackLayout Margin="20">
+            
+            <Label Text="Фамилия:"/>
+            <Entry x:Name="LastNameEntry" 
+                   Placeholder="Введите фамилию" 
+                   Text="{Binding LastName}"
+                   Keyboard="Text"
+                   MaxLength="20"/>
+            
+            <Label Text="Имя:"/>
+            <Entry x:Name="FirstNameEntry" 
+                   Placeholder="Введите имя" 
+                   Text="{Binding FirstName}"
+                   Keyboard="Text"
+                   MaxLength="20"/>
+            
+            <Label Text="Отчество:"/>
+            <Entry x:Name="MiddleNameEntry" 
+                   Placeholder="Введите отчество" 
+                   Text="{Binding MiddleName}"
+                   MaxLength="20"/>
+            
+            <Label Text="Установите возраст:"/>
+            <Slider x:Name="AgeSlider" 
+                    Maximum="100" 
+                    Value="{Binding Age, Mode=TwoWay }"/>
+            
+            <Grid ColumnDefinitions="Auto, *" VerticalOptions="Center" ColumnSpacing="10">
+                <Stepper x:Name="AgeStepper" 
+                         Maximum="100" 
+                         Increment="1" 
+                         Value="{Binding Age, Mode=TwoWay}"
+                         Grid.Column="0"/>
+                <Label VerticalOptions="Center"
+                       LineBreakMode="WordWrap"
+                       Text="{Binding AgeDisplayText}" 
+                       Grid.Column="1"/>
+            </Grid>
+            
+            <Label Text="Введите ваш номер телефона:"/>
+            <HorizontalStackLayout>
+                <Label Text="+7" VerticalOptions="Center" 
+                       TextColor="{Binding PhoneColor}"/>
+                <Entry x:Name="PhoneNumberEntry"
+                       Placeholder="XXXXXXXXXX"
+                       Keyboard="Telephone" 
+                       MaxLength="10"
+                       Text="{Binding PhoneNumber}"
+                       TextColor="{Binding PhoneColor}"/>
+            </HorizontalStackLayout>
+            
+            <StackLayout>
+                <Label Text="Кто вы по гендеру?"/>
+                <RadioButton Content="Мужчина" 
+                             GroupName="1"
+                             IsChecked="{Binding Gender, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=Male}"/>
+                <RadioButton Content="Женщина" 
+                             GroupName="1"
+                             IsChecked="{Binding Gender, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=Female}"/>
+            </StackLayout>
+            
+            <Grid ColumnDefinitions="Auto, *" VerticalOptions="Center" ColumnSpacing="10" Margin="10">
+                <Switch x:Name="AgreeSwitch" 
+                        IsToggled="{Binding IsAgreed, Mode=TwoWay }"
+                        Grid.Column="0"/>
+                <Label VerticalOptions="Center"
+                       LineBreakMode="WordWrap"
+                       Grid.Column="1">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Я принимаю условия "/>
+                            <Span Text="пользовательского соглашения" TextDecorations="Underline"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Grid>
+            
+            <Button x:Name="SubmitButton" 
+                    Text="Отправить" 
+                    Command="{Binding SubmitCommand}"
+                    IsEnabled="{Binding IsSubmitCommand}"/>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
